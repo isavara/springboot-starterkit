@@ -21,7 +21,7 @@ jobs:
             mend-white-src-scan
             ${{ github.event.pull_request.head.ref }} 
 
-        - name: Debug Event Information
+      - name: Debug Event Information
         run: |
           echo "Event Name: ${{ github.event_name }}"
           echo "Action: ${{ github.event.action }}"
