@@ -6,9 +6,6 @@ on:
   pull_request:
     branches-ignore:
       - main
-      - 'v*.*'
-      - '*'
-
 jobs:
   build:
     name: Build & push docker image
