@@ -1,10 +1,8 @@
 name: Docker image
 on:
-  push:
-    branches-ignore:
+  push:    
       - main
-  pull_request:
-    branches-ignore:
+  pull_request:    
       - main
 
 jobs:
@@ -21,7 +19,13 @@ jobs:
       
       - name: Present working directory        
         run: pwd
-
+      - name: Display Environment Info
+        run: |
+          echo "Runner Machine Name : $(hostname)"
+          echo "Operating System: $(uname)"
+          echo "Commit SHA: $GITHUB_SHA"
+          echo "Git Ref: $GITHUB_REF"
+            
       - name: Check PR Description for Flags
         id: check-flags
         if: github.event_name == 'pull_request'
@@ -34,6 +38,7 @@ jobs:
 
       - name: Debug Event Information
         run: |
+          echo "issue-number: ${{ github.event.pull_request.number }}"
           echo "Event Name: ${{ github.event_name }}"
           echo "Action: ${{ github.event.action }}"
           echo "Branch: ${{ github.ref }}"
