@@ -1,9 +1,8 @@
 name: Docker image
 on:
-  push:    
-      - main
-  pull_request:    
-      - main
+  push     
+  pull_request    
+      
 
 jobs:
   build:
