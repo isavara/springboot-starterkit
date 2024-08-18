@@ -21,7 +21,7 @@ jobs:
             mend-white-src-scan
             ${{ github.event.pull_request.head.ref }} 
 
-      - name: Debug Event Information
+        - name: Debug Event Information
         run: |
           echo "Event Name: ${{ github.event_name }}"
           echo "Action: ${{ github.event.action }}"
@@ -33,7 +33,7 @@ jobs:
         id: check-flags
         run: |
           PR_BODY=$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")
-          echo "PR Body: $PR_BODY"
+          echo "PR Body: $PR_BODY"a
           if echo "$PR_BODY" | grep -q "Run Whitesource scan"; then
             echo "::set-output name=flag_a::true"
           fi
