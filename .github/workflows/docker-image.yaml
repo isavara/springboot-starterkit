@@ -7,8 +7,6 @@ on:
     branches-ignore:
       - main
       - 'v*.*'
-      - '*'
-
 jobs:
   build:
     name: Build & push docker image
