@@ -46,7 +46,7 @@ parseScanUrl() {
 
     if [ ! -z "$container" ] && [ ! -z "$checksum" ] && [ ! -z "$url" ]; then
       #echo "| $(printf '%-10s' "$container")          | $(printf '%-13s' "$checksum")              |($url) |" >> "$md_file"
-	  printf "| %-19s | %-16s | [ (%s) |\n" "$container" "$checksum" "$url" >> "$md_file"
+	  printf "| %-19s | %-16s      |  %s |\n" "$container" "$checksum" "$url" >> "$md_file"
     fi
   done
 
