@@ -11,7 +11,7 @@ parseScanUrl() {
   log_file="$1"
 
   # Create a Markdown file
-  md_file="whitesource_scan_urls.md"
+  md_file="whitesource_scan_urls.txt"
   rm -rf "$md_file"
 
   current_date=$(date +"%a %b %e %T %Z %Y")
