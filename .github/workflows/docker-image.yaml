@@ -49,13 +49,15 @@ jobs:
 
       - name: Run Utility Script with Whitesource Log
         run: |
+          pwd
           LOG_FILE="${{ steps.find-log-dir.outputs.log_dir }}whitesource.0.log"
           sh /home/itadmin/mend-runner/actions-runner/_work/springboot-starterkit/springboot-starterkit/.github/utils/scripts/utility.sh "$LOG_FILE"    
           
       - name: Generate WS Report
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |         
+        run: |
+              pwd        
               echo "Markdown content:"
               echo "$MD_CONTENT"
 
