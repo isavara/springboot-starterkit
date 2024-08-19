@@ -22,8 +22,8 @@ parseScanUrl() {
   echo "" >> "$md_file"
 
   # Add the table headers
-  echo "| CONTAINER | CHECKSUM      | REPORT LINK |" >> "$md_file"
-  echo "|-----------|---------------|-------------|" >> "$md_file"
+  echo "| CONTAINER         | CHECKSUM      | REPORT LINK                                          |" >> "$md_file"
+  echo "|-------------------|---------------|------------------------------------------------------|" >> "$md_file"
 
   echo "Start : Generate Markdown report...."
 
