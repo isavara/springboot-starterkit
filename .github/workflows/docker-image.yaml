@@ -56,7 +56,7 @@ jobs:
         run: |
               pwd        
               echo "Markdown content:"
-              MD_CONTENT=$(cat whitesource_scan_urls.md)
+              MD_CONTENT=$(cat whitesource_scan_urls.txt)
               echo "$MD_CONTENT"
 
               
