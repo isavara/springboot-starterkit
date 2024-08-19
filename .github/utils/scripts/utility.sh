@@ -44,17 +44,12 @@ parseScanUrl() {
     checksum=$(echo "$line" | grep -oP '(?<=GHA \()[0-9a-f]+')
     url=$(echo "$line" | grep -oP '(?<=project URL:)\S+')
 
-    echo "container................................$container"
-    echo "checksum.............................$checksum"
-    echo "url..............................$url"
-
     if [ ! -z "$container" ] && [ ! -z "$checksum" ] && [ ! -z "$url" ]; then
-      echo "| $container | $checksum | [$url]($url) |" >> "$md_file"
+      printf "| %-11s | %-8s | [%s](%s) |\n" "$container" "$checksum" "$url" "$url" >> "$md_file"
     fi
   done
 
   echo "End : Generate Markdown Report..."
-  cp $md_file /home/itadmin/ws_report
 
   echo "Markdown file with hyperlinks created: $md_file"
 }
