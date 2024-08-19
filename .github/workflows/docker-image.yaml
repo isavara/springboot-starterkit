@@ -7,7 +7,7 @@ on:
     branches-ignore:
       - main
       - 'v*.*'
-      - '*'
+
 
 jobs:
   build:
@@ -33,16 +33,7 @@ jobs:
           fi
           
       - name: Present working directory        
-        run: pwd
-
-      - name: Check PR Description for Flags
-        id: check-flags
-        run: |
-          PR_BODY=$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")
-          echo "PR Body: $PR_BODY"
-          if echo "$PR_BODY" | grep -q "Run Whitesource scan"; then
-            echo "::set-output name=flag_a::true"
-          fi       
+        run: pwd  
       
           
       - name: Find Whitesource Log Directory
