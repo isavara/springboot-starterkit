@@ -22,8 +22,8 @@ parseScanUrl() {
   echo "" >> "$md_file"
 
   # Add the table headers
-  echo "| CONTAINER | CHECKSUM | URL |" >> "$md_file"
-  echo "|-----------|----------|-----|" >> "$md_file"
+  echo "| CONTAINER | CHECKSUM      | REPORT LINK |" >> "$md_file"
+  echo "|-----------|---------------|-------------|" >> "$md_file"
 
   echo "Start : Generate Markdown report...."
 
@@ -45,7 +45,7 @@ parseScanUrl() {
     url=$(echo "$line" | grep -oP '(?<=project URL:)\S+')
 
     if [ ! -z "$container" ] && [ ! -z "$checksum" ] && [ ! -z "$url" ]; then
-      printf "| %-11s | %-8s | [%s](%s) |\n" "$container" "$checksum" "$url" "$url" >> "$md_file"
+      echo "| $(printf '%-10s' "$container") | $(printf '%-13s' "$checksum") | [Link]($url) |" >> "$md_file"
     fi
   done
 
