@@ -17,7 +17,7 @@ jobs:
       - name: Check if 'Run Whitesource Scan' is checked
         if: ${{ github.event_name == 'pull_request' }}
         run: |         
-          if: contains(github.event.pull_request.labels.*.name, 'run-scan'); then
+          if: contains(github.event.pull_request.labels.*.name, 'Run Whitesource Scan'); then
             echo "Run Whitesource Scan is checked."
           else
             echo "Run Whitesource Scan is not checked."
