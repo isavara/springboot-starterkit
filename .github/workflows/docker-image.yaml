@@ -15,7 +15,8 @@ jobs:
     runs-on: mend-new-runner-1-label-1
     steps:
       - name: Echo GitHub Event Name
-        run: echo "EVENT ::::: ${{ github.event_name }}"
+        run: |
+          echo "EVENT ::::: ${{ github.event_name }}"
      
       - name: Checkout
         uses: actions/checkout@v3
