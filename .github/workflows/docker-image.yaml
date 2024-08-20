@@ -15,6 +15,7 @@ jobs:
     runs-on: mend-new-runer-1-label-1
     steps:    
       - name: Check if 'Run Whitesource Scan' is checked
+      echo "EVENT ::::: ${{ github.event_name }}"
         if: ${{ github.event_name == 'pull_request' }}
         run: |         
           if: contains(github.event.pull_request.labels.*.name, 'Run Whitesource Scan'); then
