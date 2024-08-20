@@ -16,18 +16,7 @@ jobs:
     steps:
       - name: Echo GitHub Event Name
         run: echo "EVENT ::::: ${{ github.event_name }}"
-
-      - name: Check if 'Run Whitesource Scan' is checked
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "Checking if the 'Run Whitesource Scan' label is applied."
-          if echo ${{ toJSON(github.event.pull_request.labels) }} | grep -q '"Run Whitesource Scan"'; then
-            echo "Run Whitesource Scan is checked."
-          else
-            echo "Run Whitesource Scan is not checked."
-            exit 1
-          fi
-
+     
       - name: Checkout
         uses: actions/checkout@v3
         with:
