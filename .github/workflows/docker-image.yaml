@@ -14,12 +14,14 @@ jobs:
     name: Build & push docker image
     runs-on: mend-new-runer-1-label-1
     steps:    
+      - name: Echo GitHub Event Name
+        run: echo "EVENT ::::: ${{ github.event_name }}"
+
       - name: Check if 'Run Whitesource Scan' is checked
-        echo "EVENT ::::: "
-        echo ${{ github.event_name }}
         if: ${{ github.event_name == 'pull_request' }}
-        run: |         
-          if: contains(github.event.pull_request.labels.*.name, 'Run Whitesource Scan'); then
+        run: |
+          echo "Checking if the 'Run Whitesource Scan' label is applied."
+          if [[ " ${GITHUB_EVENT_PATH} " == *"Run Whitesource Scan"* ]]; then
             echo "Run Whitesource Scan is checked."
           else
             echo "Run Whitesource Scan is not checked."
