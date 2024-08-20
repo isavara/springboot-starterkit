@@ -21,7 +21,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           echo "Checking if the 'Run Whitesource Scan' label is applied."
-          if [[ " ${GITHUB_EVENT_PATH} " == *"Run Whitesource Scan"* ]]; then
+          if echo ${{ toJSON(github.event.pull_request.labels) }} | grep -q '"Run Whitesource Scan"'; then
             echo "Run Whitesource Scan is checked."
           else
             echo "Run Whitesource Scan is not checked."
@@ -43,7 +43,7 @@ jobs:
           else
             echo "::set-output name=flag_a::false"
           fi
-          
+
       - name: Present working directory        
         run: pwd  
       
@@ -56,13 +56,13 @@ jobs:
           
       - name: Make utility.sh Executable
         run: chmod +x /home/itadmin/mend-runner/actions-runner/_work/springboot-starterkit/springboot-starterkit/.github/utils/scripts/utility.sh
-          
+
       - name: Run Utility Script with Whitesource Log
         run: |
           pwd
           LOG_FILE="${{ steps.find-log-dir.outputs.log_dir }}whitesource.0.log"
           sh /home/itadmin/mend-runner/actions-runner/_work/springboot-starterkit/springboot-starterkit/.github/utils/scripts/utility.sh "$LOG_FILE"
-          
+
       - name: Generate WS Report
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
