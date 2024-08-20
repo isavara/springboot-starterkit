@@ -13,12 +13,22 @@ jobs:
   build:
     name: Build & push docker image
     runs-on: mend-new-runer-1-label-1
-    steps:
+    steps:    
+      - name: Check if 'Run Whitesource Scan' is checked
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          if [[ "${{ github.event.pull_request.body }}" == *"Run Whitesource Scan"* ]]; then
+            echo "Run Whitesource Scan is checked."
+          else
+            echo "Run Whitesource Scan is not checked."
+            exit 1
+          fi
+          
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: |
-            1-success-mend     
+            Check-pull-request-template     
   
       - name: Check PR Description for Flags
         id: check-flags
