@@ -1,50 +1,63 @@
 name: Docker image
+
 on:
   push:
-    branches:
-      - '*'
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches-ignore:
+      - main
   pull_request:
-    branches:
-      - '*'
+    branches-ignore:
+      - main
+      - 'v*.*'
+
 jobs:
   build:
     name: Build & push docker image
-    runs-on: ubuntu-latest
+    runs-on: mend-new-runner-1-label-1
     steps:
+      - name: Echo GitHub Event Name
+        run: |
+          echo "EVENT ::::: ${{ github.event_name }}"
+     
       - name: Checkout
-        uses: actions/checkout@v4.1.1
-
-      - name: Docker metadata
-        id: metadata
-        uses: docker/metadata-action@v5
+        uses: actions/checkout@v3
         with:
-          images: ${{ github.repository }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=dev-{{date 'YYYYMMDDhhmm'}}.{{sha}},enable=${{ github.ref_type != 'tag' }}
+          ref: Check-pull-request-template
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Check PR Description for Flags
+        id: check-flags
+        run: |
+          PR_BODY=$(jq -r .pull_request.body "$GITHUB_EVENT_PATH")
+          echo "PR Body: $PR_BODY"
+          if echo "$PR_BODY" | grep -q "Run Whitesource scan"; then
+            echo "::set-output name=flag_a::true"
+          else
+            echo "::set-output name=flag_a::false"
+          fi
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          context: .
-          push: ${{ startsWith(github.ref, 'refs/tags/') }}
-          tags: ${{ steps.metadata.outputs.tags }}
-          labels: ${{ steps.metadata.outputs.labels }}
+      - name: Present working directory        
+        run: pwd  
+      
+      - name: Find Whitesource Log Directory
+        id: find-log-dir
+        run: |
+          LOG_DIR=$(ls -td /home/itadmin/mend-runner/bigfix-docker/whitesource/*/ | head -n 1)
+          echo "Log directory found: $LOG_DIR"
+          echo "::set-output name=log_dir::$LOG_DIR"
+          
+      - name: Make utility.sh Executable
+        run: chmod +x /home/itadmin/mend-runner/actions-runner/_work/springboot-starterkit/springboot-starterkit/.github/utils/scripts/utility.sh
 
-      - name: Create release
-        uses: josephrodriguez/swift-release@v1.1
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}          
+      - name: Run Utility Script with Whitesource Log
+        run: |
+          pwd
+          LOG_FILE="${{ steps.find-log-dir.outputs.log_dir }}whitesource.0.log"
+          sh /home/itadmin/mend-runner/actions-runner/_work/springboot-starterkit/springboot-starterkit/.github/utils/scripts/utility.sh "$LOG_FILE"
+
+      - name: Generate WS Report
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          pwd        
+          echo "Markdown content:"
+          MD_CONTENT=$(cat whitesource_scan_urls.txt)
+          echo "$MD_CONTENT"
